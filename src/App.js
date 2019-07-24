@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import MyComponent from './components/MyComponent'
+import RentInput from './components/RentInput'
 
 const imaginaryUser = {
   email: '',
@@ -13,7 +13,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <MyComponent />
+        <RentInput />
       </div>
     )
   }

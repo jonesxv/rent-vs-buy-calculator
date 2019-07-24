@@ -130,10 +130,22 @@ class DataGraph extends Component {
 				xValueFormatString: "MMM YYYY",
 				yValueFormatString: "$#,##0.00",
 				dataPoints: dataPoints
-			}]
+			},
+			{
+				type: "line",
+				xValueFormatString: "MMM YYYY",
+				yValueFormatString: "$#,##0.00",
+				dataPoints: dataPoints.map(data => {
+					return {
+						...data,
+						y: data.y *10
+					}
+				})
+			}
+		]
 		}
 		
-		console.log(this.props)
+		console.log('Rent Data: '+JSON.stringify(this.props.rentData));
 		return (
 			<div>
 				<CanvasJSChart options = {options}

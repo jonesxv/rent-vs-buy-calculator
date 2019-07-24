@@ -45,15 +45,15 @@ class MyComponent extends React.Component {
                 onSubmit={fields => {
                     alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
                 }}
-                render={({ errors, status, touched, values }) => (
+                render={(props) => (
                     <>
-                    <Form>
+                    <Form onChange={console.log(props)}>
                         <div className="form-group">
                             <label htmlFor="firstName">First Name</label>
-                            <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
+                            <Field name="firstName" type="text" className={'form-control' + (props.errors.firstName && props.touched.firstName ? ' is-invalid' : '')} />
                             <ErrorMessage name="firstName" component="div" className="invalid-feedback" />
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="lastName">Last Name</label>
                             <Field name="lastName" type="text" className={'form-control' + (errors.lastName && touched.lastName ? ' is-invalid' : '')} />
                             <ErrorMessage name="lastName" component="div" className="invalid-feedback" />
@@ -72,14 +72,14 @@ class MyComponent extends React.Component {
                             <label htmlFor="confirmPassword">Confirm Password</label>
                             <Field name="confirmPassword" type="password" className={'form-control' + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')} />
                             <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
-                        </div>
+                        </div> */}
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary mr-2">Register</button>
                             <button type="reset" className="btn btn-secondary">Reset</button>
                         </div>
                 
                     </Form>
-                    <DataGraph rentData={values} />
+                    <DataGraph rentData={props.values} />
                     </>
                 )}
             />
