@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import RentForm from './components/RentForm'
+import ValidationSchemaExample from './components/MortgageForm'
 
 const imaginaryUser = {
   email: '',
@@ -12,7 +12,7 @@ const imaginaryUser = {
 function App() {
   return (
     <div className="App">
-      <RentForm/>
+      TEst
     </div>
   );
 }
