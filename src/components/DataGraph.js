@@ -1,66 +1,9 @@
-// var React = require('react');
-// var Component = React.Component;
-// var CanvasJSReact = require('../lib/canvasjs.react');
-// var CanvasJS = CanvasJSReact.CanvasJS;
-// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-// var dataPoints =[];
-// class DataGraph extends Component {
-
-// 	render() {
-// 		const options = {
-// 			theme: "light2",
-// 			title: {
-// 				text: "Stock Price of NIFTY 50"
-// 			},
-// 			axisY: {
-// 				title: "Price in USD",
-// 				prefix: "$",
-// 				includeZero: false
-// 			},
-// 			data: [{
-// 				type: "line",
-// 				xValueFormatString: "MMM YYYY",
-// 				yValueFormatString: "$#,##0.00",
-// 				dataPoints: dataPoints
-// 			}]
-// 		}
-// 		return (
-// 		<div>
-// 			<CanvasJSChart options = {options}
-// 				 onRef={ref => this.chart = ref}
-// 			/>
-// 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-// 		</div>
-// 		);
-// 	}
-
-// 	componentDidMount(){
-// 		var chart = this.chart;
-// 		fetch('https://canvasjs.com/data/gallery/react/nifty-stock-price.json')
-// 		.then(function(response) {
-// 			return response.json();
-// 		})
-// 		.then(function(data) {
-// 			for (var i = 0; i < data.length; i++) {
-// 				dataPoints.push({
-// 					x: new Date(data[i].x),
-// 					y: data[i].y
-// 				});
-// 			}
-// 			chart.render();
-// 		});
-// 	}
-// }
-
-// export default DataGraph;
-
 import React, { Component } from "react";
 import CanvasJSReact from "../lib/canvasjs.react";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-var dataPoints = [
+var mortgagedataPoints = [
 	{
 		x: 1,
 		y: 8561.3
@@ -186,11 +129,21 @@ class DataGraph extends Component {
 	//v (value)
 	calculateDataPoints = (v) =>
 	{
-		let totalRent = parseFloat(v.total) + parseFloat(v.utilities)
+		let totalRent = parseFloat(v['monthly rent']) + parseFloat(v.utilities)
 		if(totalRent >0)
-			{CalcElem.totalRent = totalRent}
+			{
+				CalcElem.totalRent = totalRent
+				for(let i=0;i<10;i++)
+					{
+						rentDataPoints[i] = {x:(i+1),y:parseInt(totalRent)*(i+1)}
+						console.log(rentDataPoints[i])
+					}
+				}
 		else
 			{CalcElem.totalRent = 0}
+
+		//
+
 	}
 	render() {
 		this.calculateDataPoints(this.props)
@@ -212,13 +165,13 @@ class DataGraph extends Component {
 					type: "line",
 					xValueFormatString: "MMM YYYY",
 					yValueFormatString: "$#,##0.00",
-					dataPoints: dataPoints
+					dataPoints: rentDataPoints
 				},
 				{
 					type: "line",
 					xValueFormatString: "MMM YYYY",
 					yValueFormatString: "$#,##0.00",
-					dataPoints: dataPoints.map(data => {
+					dataPoints: mortgagedataPoints.map(data => {
 						return {
 							...data,
 							y: data.y * 10
@@ -232,6 +185,8 @@ class DataGraph extends Component {
 				<div>
 					<h1>{JSON.stringify(this.props)}</h1>
 					<h2>Fixed Rent: {CalcElem.totalRent} </h2>
+					<h3></h3>
+					<h2>{JSON.stringify(rentDataPoints)}</h2>
 				</div>
 				<CanvasJSChart
 					options={options}
