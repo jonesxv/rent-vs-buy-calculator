@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import ValidationSchemaExample from './components/MortgageForm'
+import MyComponent from './components/MyComponent'
 
 const imaginaryUser = {
   email: '',
@@ -12,7 +12,7 @@ const imaginaryUser = {
 function App() {
   return (
     <div className="App">
-      TEst
+      <MyComponent />
     </div>
   );
 }
