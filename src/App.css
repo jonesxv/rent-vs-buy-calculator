@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  padding: 10% 15%;
+  background: -webkit-linear-gradient(left, #3931af, #0091ba);
 }
 
 .App-logo {
@@ -33,7 +35,25 @@
 }
 
 .input-form {
-  width: 50%;
+  
+  color: white;
+  padding: 3%;
+  border-radius: 2rem;
+  margin-bottom: 5em;
+}
+
+.input-form-right {
+
+}
+
+.input-form h1 {
+  margin-bottom: 1em;
+}
+
+.input-field {
+  padding: .4em;
+  border-radius: .4em;
+  margin: .4em;
 }
 
 .form-container {

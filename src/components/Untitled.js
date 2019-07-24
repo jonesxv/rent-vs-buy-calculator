@@ -2,35 +2,6 @@ import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import DataGraph from './DataGraph';
 
-const fields = {
-  rentData: [
-    'income available for housing',
-    'investment gain',
-    'monthly rent',
-    'utilities',
-  ],
-  mortgageData: [
-    'income available for housing',
-    'investment gain',
-    'cost',
-    'down payment',
-    'property taxes',
-    'maintenance',
-    'interest'
-  ]
-}
-
-let initVals = {}
-
-fields.rentData.forEach(el => {
-  initVals[el] = ''
-}) 
-
-fields.mortgageData.forEach(el => {
-  initVals[el] = ''
-})
-
-
 class MyForm extends React.Component {
   
   handleSubmit = (values, { 
@@ -41,18 +12,31 @@ class MyForm extends React.Component {
     setSubmitting(false);
     return;
   }
-
-
+   
   render() {
 
-    console.log(initVals)
+    let fields = {
+      rentData: [
+        'total',
+        'utilities'
+      ],
+      mortgageData: [
+        'cost',
+        'down payment',
+        'taxes'
+      ]
+    }
      
     return(
       <Formik
         initialValues={{
-          ...initVals,
           rentData: fields.rentData,
           mortgageData: fields.mortgageData,
+          total: '',
+          utilities: '',
+          cost: '',
+          'down payment': '',
+          taxes: ''
         }}
         validate={(values) => {
           let errors = [];
@@ -66,8 +50,8 @@ class MyForm extends React.Component {
         render={formProps => {
           return(
             <>
-            <div className="row justify-content-around form-container">
-            <Form className="col-4 input-form">
+            <div >
+            <Form >
               <h1>Rent</h1>
               <FieldArray
                 name='rentData'
@@ -76,11 +60,10 @@ class MyForm extends React.Component {
                    {formProps.values.rentData.map((field, index) => (           
                      <div key={index}>
 							       
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      <label htmlFor={`fields.${field}`}>{field}</label>
                       <Field 
-                        onValueChange={val => formProps.setFieldValue('numbers', val.floatValue)}
-                        className="input-field col-6"
-                        type="Number"
+                        
+                        type="number"
                         name={field} 
                        />
                      </div>
@@ -90,7 +73,7 @@ class MyForm extends React.Component {
             	  )}
             	/>
           </Form>
-          <Form className="col-4 input-form input-form-right">
+          <Form className="input-form col-5">
             <h1>Buy</h1>
             <FieldArray
                 name='fields'
@@ -98,9 +81,9 @@ class MyForm extends React.Component {
             	   <div>         
                    {formProps.values.mortgageData.map((field, index) => (           
                      <div key={index}>
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
-                      <Field 
-                        className="input-field col-6"
+                      <label className="col-3 col-form-label text-right" htmlFor={`fields.${field}`}>{field}</label>
+                      <Field className="input-field col-6"
+                        type="number"
                         name={field} 
                        />     
 							              
@@ -111,9 +94,7 @@ class MyForm extends React.Component {
             	/>
             </Form>
             </div>
-            <div>
-              <DataGraph className="graph" {...formProps.values}/>
-            </div>
+              <DataGraph {...formProps.values}/>
             </>
           );
         }}
