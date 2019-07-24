@@ -112,9 +112,62 @@ var dataPoints = [
 	}
 ];
 
+var rentDataPoints = [
+	{
+			"x": 1,
+			"y": 8561.3
+	},
+	{
+			"x": 2,
+			"y": 8879.6
+	},
+	{
+			"x": 3,
+			"y": 9173.75
+	},
+	{
+			"x": 4,
+			"y": 9304.05
+	},
+	{
+			"x": 5,
+			"y": 9621.25
+	},
+	{
+			"x": 6,
+			"y": 9520.9
+	},
+	{
+			"x": 7,
+			"y": 10077.1
+	},
+	{
+			"x": 8,
+			"y": 9917.9
+	},
+	{
+			"x": 9,
+			"y": 9788.6
+	},
+	{
+			"x": 10,
+			"y": 10335.3
+	},
+	{
+			"x": 11,
+			"y": 10226.55
+	},
+	{
+			"x": 12,
+			"y": 10530.7
+	}
+];
+
 class DataGraph extends Component {
 
 	render() {
+		const mortgageTotal = this.props.mortgageTotal
+		const rentTotal = this.props.rentTotal
 		const options = {
 			theme: "light2",
 			title: {
@@ -145,7 +198,7 @@ class DataGraph extends Component {
 		]
 		}
 		
-		console.log('Rent Data: '+JSON.stringify(this.props.rentData));
+		console.log('Rent Data: '+ this.props);
 		return (
 			<div>
 				<CanvasJSChart options = {options}

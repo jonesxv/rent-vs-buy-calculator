@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import RentInput from './components/RentInput'
+import MyForm from './components/MyForm'
 
 const imaginaryUser = {
   email: '',
@@ -13,7 +14,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <RentInput />
+        {/* <RentInput /> */}
+      
+        <MyForm />
+        
       </div>
     )
   }
