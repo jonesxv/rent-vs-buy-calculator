@@ -164,10 +164,11 @@ var rentDataPoints = [
 ];
 
 class DataGraph extends Component {
-
 	render() {
 		const mortgageTotal = this.props.mortgageTotal
 		const rentTotal = this.props.rentTotal
+
+
 		const options = {
 			theme: "light2",
 			title: {
@@ -198,9 +199,13 @@ class DataGraph extends Component {
 		]
 		}
 		
-		console.log('Rent Data: '+ this.props);
+		function CalcfixedRent()
+		{
+			//this.props.
+		}
 		return (
 			<div>
+				<div><h1>{JSON.stringify(this.props)}</h1></div>
 				<CanvasJSChart options = {options}
 						/* onRef = {ref => this.chart = ref} */
 				/>
