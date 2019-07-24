@@ -31,8 +31,8 @@ class MyComponent extends React.Component {
                 onSubmit={fields => {
                     alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
                 }}
-                render={({ errors, status, touched }) => (
-                    <Form>
+                render={({ errors, status, touched, props }) => (
+                    <Form change={props.handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="firstName">First Name</label>
                             <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
