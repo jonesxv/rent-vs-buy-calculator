@@ -133,6 +133,7 @@ class DataGraph extends Component {
 			}]
 		}
 		
+		console.log(this.props)
 		return (
 			<div>
 				<CanvasJSChart options = {options}

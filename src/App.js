@@ -10,22 +10,10 @@ const imaginaryUser = {
 };
 
 class App extends React.Component {
-  state = {
-    rentValues: {}
-  }
-
-  handleChange = values => {
-    this.setState(prevState => {
-      console.log(prevState)
-      return {
-        rentValues: values
-      }
-    })
-  }
   render() {
     return (
       <div className="App">
-        <MyComponent setValues={this.handleChange} />
+        <MyComponent />
       </div>
     )
   }

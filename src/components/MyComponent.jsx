@@ -1,10 +1,24 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import DataGraph from './DataGraph'
 
 class MyComponent extends React.Component {
+    state = {
+        rentValues: {}
+    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevProps, prevState)
+
+    }
+    handleChange = vals => {
+        this.setState({ rentValues: vals })
+    }
     render() {
         return (
+            <>
+
+            {/* <input onChange={e => this.props.setValue(e.target.value)} type="text"/> */}
             <Formik
                 initialValues={{
                     firstName: '',
@@ -32,12 +46,11 @@ class MyComponent extends React.Component {
                     alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
                 }}
                 render={({ errors, status, touched, values }) => (
+                    <>
                     <Form>
                         <div className="form-group">
                             <label htmlFor="firstName">First Name</label>
-                            <Field 
-                            onChange={() => this.props.setValues(...values)}
-                                name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
+                            <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
                             <ErrorMessage name="firstName" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
@@ -64,9 +77,13 @@ class MyComponent extends React.Component {
                             <button type="submit" className="btn btn-primary mr-2">Register</button>
                             <button type="reset" className="btn btn-secondary">Reset</button>
                         </div>
+                
                     </Form>
+                    <DataGraph rentData={values} />
+                    </>
                 )}
             />
+            </>
         )
     }
 }
