@@ -1,11 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
-import Yup from 'yup';
+import * as Yup from 'yup' 
 import VirtualizedSelect from 'react-virtualized-select';
 
-import 'react-select/dist/react-select.css';
-import 'react-virtualized/styles.css';
-import 'react-virtualized-select/styles.css';
+// import 'react-select/dist/react-select.css';
+// import 'react-virtualized/styles.css';
+// import 'react-virtualized-select/styles.css';
 
 const imaginaryThings = [
   { label: 'Thing 1', value: 1 },

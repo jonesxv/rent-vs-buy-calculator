@@ -1,13 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import RentForm from './components/RentForm'
 
+const imaginaryUser = {
+  email: '',
+  username: '',
+  imaginaryThingId: null,
+};
+
 function App() {
   return (
     <div className="App">
-    <RentForm />
+      <RentForm/>
     </div>
   );
 }
