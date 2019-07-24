@@ -41,7 +41,8 @@ class NumberInput extends React.Component {
   render() {
     return (
       <NumberFormat
-        prefix={'$'}
+        prefix={this.props.name !== 'property taxes' ? '$' : ''}
+        suffix={this.props.name === 'property taxes' ? '%' : ''}
         placeholder="Number Format Input looses focus"
         isNumericString={true}
         thousandSeparator={true}
@@ -109,7 +110,7 @@ class MyForm extends React.Component {
                         value={formProps.values[field]}
                         onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
                       />
-                     </div>
+                    </div>
                   ))}
 
                  </div>
