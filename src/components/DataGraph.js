@@ -107,11 +107,9 @@ var rentDataPoints = [
 
 let CalcElem = {
 	totalRent: 0
-}
+};
 
 class DataGraph extends Component {
-
-
 	// state = { value: 0,
 	// 	fixedRent: 0 };
 
@@ -127,26 +125,24 @@ class DataGraph extends Component {
 	// }
 
 	//v (value)
-	calculateDataPoints = (v) =>
-	{
-		let totalRent = parseFloat(v['monthly rent']) + parseFloat(v.utilities)
-		if(totalRent >0)
-			{
-				CalcElem.totalRent = totalRent
-				for(let i=0;i<10;i++)
-					{
-						rentDataPoints[i] = {x:(i+1),y:parseInt(totalRent)*(i+1)}
-						console.log(rentDataPoints[i])
-					}
-				}
-		else
-			{CalcElem.totalRent = 0}
+	calculateDataPoints = v => {
+		let monthlyRent =
+			parseFloat(v["monthly rent"]) > 0
+				? parseFloat(v["monthly rent"])
+				: 0;
+		let monthlyUtilities =
+			parseFloat(v.utilities) > 0 ? parseFloat(v.utilities) : 0;
 
-		//
+		let totalRent = monthlyRent + monthlyUtilities;
 
-	}
+		for (let i = 0; i < 12; i++) {
+			rentDataPoints[i] = { x: (i + 1), y: (parseInt(totalRent) * (i + 1)) };
+			console.log(rentDataPoints[i]);
+		}
+	};
+
 	render() {
-		this.calculateDataPoints(this.props)
+		this.calculateDataPoints(this.props);
 		const mortgageTotal = this.props.mortgageTotal;
 		const rentTotal = this.props.rentTotal;
 		// if(this.setState({fixedRent: this.props.total + this.props.utilities})
