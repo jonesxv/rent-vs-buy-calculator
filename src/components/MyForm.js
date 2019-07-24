@@ -17,6 +17,7 @@ const fields = {
     'down payment',
     'property taxes',
     'maintenance',
+    'utilities',
     'interest'
   ]
 }
@@ -40,6 +41,7 @@ class NumberInput extends React.Component {
   render() {
     return (
       <NumberFormat
+        prefix={'$'}
         placeholder="Number Format Input looses focus"
         isNumericString={true}
         thousandSeparator={true}
