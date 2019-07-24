@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import NumberFormat from 'react-number-format';
 import DataGraph from './DataGraph';
 
 const fields = {
@@ -31,6 +32,25 @@ fields.mortgageData.forEach(el => {
 })
 
 
+
+class NumberInput extends React.Component {
+  state = {
+    value: '',
+  };
+  render() {
+    return (
+      <NumberFormat
+        placeholder="Number Format Input looses focus"
+        isNumericString={true}
+        thousandSeparator={true}
+        value={this.state.value}
+        onValueChange={vals => this.setState({ value: vals.formattedValue })}
+        {...this.props}
+      />
+    );
+  }
+}
+
 class MyForm extends React.Component {
   
   handleSubmit = (values, { 
@@ -45,8 +65,6 @@ class MyForm extends React.Component {
 
   render() {
 
-    console.log(initVals)
-     
     return(
       <Formik
         initialValues={{
@@ -77,12 +95,18 @@ class MyForm extends React.Component {
                      <div key={index}>
 							       
                       <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
-                      <Field 
-                        onValueChange={val => formProps.setFieldValue('numbers', val.floatValue)}
+                      {/* <Field 
                         className="input-field col-6"
                         type="Number"
                         name={field} 
-                       />
+                       /> */}
+                      <NumberInput 
+                        className="input-field col-6"
+                        placeholder={`enter ${field}`}
+                        name={field}
+                        value={formProps.values[field]}
+                        onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
+                      />
                      </div>
                   ))}
 
@@ -99,11 +123,18 @@ class MyForm extends React.Component {
                    {formProps.values.mortgageData.map((field, index) => (           
                      <div key={index}>
                       <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
-                      <Field 
+                      {/* <Field 
                         className="input-field col-6"
+                        type="Number"
                         name={field} 
-                       />     
-							              
+                       />      */}
+                      <NumberInput 
+                        className="input-field col-6"
+                        placeholder={`enter ${field}`}
+                        name={field}
+                        value={formProps.values[field]}
+                        onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
+                      />
                      </div>
                   ))}
                   </div>
