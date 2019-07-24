@@ -31,11 +31,13 @@ class MyComponent extends React.Component {
                 onSubmit={fields => {
                     alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
                 }}
-                render={({ errors, status, touched, props }) => (
-                    <Form change={props.handleSubmit}>
+                render={({ errors, status, touched, values }) => (
+                    <Form>
                         <div className="form-group">
                             <label htmlFor="firstName">First Name</label>
-                            <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
+                            <Field 
+                            onChange={() => this.props.setValues(...values)}
+                                name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
                             <ErrorMessage name="firstName" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
