@@ -2,6 +2,35 @@ import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import DataGraph from './DataGraph';
 
+const fields = {
+  rentData: [
+    'income available for housing',
+    'investment gain',
+    'monthly rent',
+    'utilities',
+  ],
+  mortgageData: [
+    'income available for housing',
+    'investment gain',
+    'cost',
+    'down payment',
+    'property taxes',
+    'maintenance',
+    'interest'
+  ]
+}
+
+let initVals = {}
+
+fields.rentData.forEach(el => {
+  initVals[el] = ''
+}) 
+
+fields.mortgageData.forEach(el => {
+  initVals[el] = ''
+})
+
+
 class MyForm extends React.Component {
   
   handleSubmit = (values, { 
@@ -12,37 +41,18 @@ class MyForm extends React.Component {
     setSubmitting(false);
     return;
   }
-   
+
+
   render() {
 
-    let fields = {
-      rentData: [
-        'income available for housing',
-        'investment gain',
-        'monthly rent',
-        'utilities',
-      ],
-      mortgageData: [
-        'income available for housing',
-        'investment gain',
-        'cost',
-        'down payment',
-        'property taxes',
-        'maintenance',
-        'interest'
-      ]
-    }
+    console.log(initVals)
      
     return(
       <Formik
         initialValues={{
+          ...initVals,
           rentData: fields.rentData,
           mortgageData: fields.mortgageData,
-          total: '',
-          utilities: '',
-          cost: '',
-          'down payment': '',
-          taxes: ''
         }}
         validate={(values) => {
           let errors = [];
