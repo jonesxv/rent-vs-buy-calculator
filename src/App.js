@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import RentInput from './components/RentInput'
+// import RentInput from './components/RentInput'
 import MyForm from './components/MyForm'
 
 const imaginaryUser = {
