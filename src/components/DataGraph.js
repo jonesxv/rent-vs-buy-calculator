@@ -144,8 +144,8 @@ class DataGraph extends Component {
 			: 0;
 		CalcElem["investmentGain"] = investmentGain;
 
-		let assetInvestementGain = parseFloat(v["asset investement gain"])
-			? parseFloat(v["asset investement gain"])
+		let assetInvestementGain = parseFloat(v["asset investment gain"])
+			? parseFloat(v["asset investment gain"])
 			: 0;
 		CalcElem["assetInvestementGain"] = assetInvestementGain;
 
