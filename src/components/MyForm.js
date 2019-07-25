@@ -2,11 +2,8 @@ import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import NumberFormat from 'react-number-format';
 import DataGraph from './DataGraph';
-<<<<<<< HEAD
 import taxInfo from '../data/taxInfo';
-=======
 import { Persist } from 'formik-persist'
->>>>>>> b6074abddad1a61e3d9c55c59bf795b9ade93463
 
 const fields = {
   rentData: [
