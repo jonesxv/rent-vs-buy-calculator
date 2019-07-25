@@ -118,7 +118,7 @@ class MyForm extends React.Component {
                    {formProps.values.rentData.map((field, index) => (           
                      <div key={index}>
 							       
-                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field} </label>
                       {/* <Field 
                         className="input-field col-6"
                         type="Number"
@@ -146,7 +146,7 @@ class MyForm extends React.Component {
             	   <div>         
                    {formProps.values.mortgageData.map((field, index) => (           
                      <div key={index}>
-                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field} {field === 'home value' && formProps.values.location.length > 0 ? `(${formProps.values.location} average: $${taxInfo[formProps.values.location].medianValue})` : ''}</label>
                       {/* <Field 
                         className="input-field col-6"
                         type="Number"
