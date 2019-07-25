@@ -12,7 +12,7 @@ const fields = {
   ],
   mortgageData: [
     'income available for housing',
-    'investment gain',
+    'asset investement gain',
     'cost',
     'down payment',
     'property taxes',
