@@ -166,8 +166,8 @@ class DataGraph extends Component {
 
 		//P = L[c(1 + c)n]/[(1 + c)n - 1]
 		let monthlyMortgage =
-			parseFloat(v["cost"]) > 0
-				? (parseFloat(v["cost"]) - downPayment) *
+			parseFloat(v["home value"]) > 0
+				? (parseFloat(v["home value"]) - downPayment) *
 				  ((monthlyInterest * 0.01 * ((1 + monthlyInterest * 0.01) ** (25*12))) /
 						((((1 + monthlyInterest * 0.01) ** (25*12)) - 1)))
 				: 0;
