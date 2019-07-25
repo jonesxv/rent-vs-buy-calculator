@@ -143,22 +143,54 @@ class DataGraph extends Component {
 			? parseFloat(v["investment gain"])
 			: 0;
 
+		//Affects Mortgage form.
+		let monthlyMortgage =
+			parseFloat(v["cost"]) > 0 ? parseFloat(v["cost"]) : 0;
+
 		//Remaining Income for EITHER form
-		let remainingIncRent = housingIncome - monthlyUtilities - monthlyRent;
-		let remainingIncMortgage =
+		let moneyAvailAfterRent =
 			housingIncome - monthlyUtilities - monthlyRent;
+		let moneyAvailAfterMortgage =
+			housingIncome - monthlyUtilities - monthlyMortgage;
 
 		let totalRent = monthlyRent + monthlyUtilities;
+				let totalMortgage = monthlyMortgage + monthlyUtilities;
+		CalcElem["totalRent"] = totalRent;
 
 		//RENT GRAPHING
-		let calcval = (i,futureValue) => {
-			futureValue = (futureValue + remainingIncRent ) * (1 + investmentGain);
-			return (totalRent * (i+1)) - (futureValue)
-		}
-		for (let i = 0; i < 12; i++) {
-			let futureValue = 0;
 
-			rentDataPoints[i] = { x: i + 1, y: calcval(i,futureValue) };
+		//calcval function---------------------
+		//i: year (index)
+		//f: futureValue passed as a param. Updates futureValue in outer scope.
+		//m: money that is available to be invested. moneyAvailAfterRent || moneyAvailAfterMortgage
+		//t: type ('rent','mortgage',null)
+		let calcval = (i, f, m, t) => {
+			if (t == "rent") {
+				futureValueRent = (f + m) * (1 + investmentGain * 0.01);
+				return futureValueRent - totalRent * (i + 1);
+			} else {
+				futureValueMortgage = (f + m) * (1 + investmentGain * 0.01);
+				return futureValueMortgage - totalMortgage * (i + 1);
+			}
+		};
+		//Initialize the returns on investments as 0.
+		let futureValueRent = 0;
+		let futureValueMortgage = 0;
+
+		//-------------------------------------
+
+		//Calculate for each year. x: year, y: money.
+		for (let i = 0; i < 12; i++) {
+			// console.log("future val:" + futureValue);
+			rentDataPoints[i] = {
+				x: i + 1,
+				y: calcval(i, futureValueRent, moneyAvailAfterRent, 'rent')
+			};
+
+			mortgagedataPoints[i] = {
+				x: i + 1,
+				y: calcval(i, futureValueMortgage, moneyAvailAfterMortgage, 'mortgage')
+			};
 			console.log(rentDataPoints[i]);
 		}
 	};
@@ -202,7 +234,7 @@ class DataGraph extends Component {
 			<div>
 				<div>
 					<h1>{JSON.stringify(this.props)}</h1>
-					<h2>Fixed Rent: {CalcElem.totalRent} </h2>
+					<h2>Total Rent: {CalcElem.totalRent} </h2>
 					<h3></h3>
 					<h2>{JSON.stringify(rentDataPoints)}</h2>
 				</div>
