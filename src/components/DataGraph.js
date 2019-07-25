@@ -126,17 +126,39 @@ class DataGraph extends Component {
 
 	//v (value)
 	calculateDataPoints = v => {
-		let monthlyRent =
-			parseFloat(v["monthly rent"]) > 0
-				? parseFloat(v["monthly rent"])
+		//Affects either form.
+		let housingIncome =
+			parseFloat(v["income available for housing"]) > 0
+				? parseFloat(v["income available for housing"])
 				: 0;
 		let monthlyUtilities =
 			parseFloat(v.utilities) > 0 ? parseFloat(v.utilities) : 0;
 
+		//Affects RENT form.
+		let monthlyRent =
+			parseFloat(v["monthly rent"]) > 0
+				? parseFloat(v["monthly rent"])
+				: 0;
+		let investmentGain = parseFloat(v["investment gain"])
+			? parseFloat(v["investment gain"])
+			: 0;
+
+		//Remaining Income for EITHER form
+		let remainingIncRent = housingIncome - monthlyUtilities - monthlyRent;
+		let remainingIncMortgage =
+			housingIncome - monthlyUtilities - monthlyRent;
+
 		let totalRent = monthlyRent + monthlyUtilities;
 
+		//RENT GRAPHING
+		let calcval = (i,futureValue) => {
+			futureValue = (futureValue + remainingIncRent ) * (1 + investmentGain);
+			return (totalRent * (i+1)) - (futureValue)
+		}
 		for (let i = 0; i < 12; i++) {
-			rentDataPoints[i] = { x: (i + 1), y: (parseInt(totalRent) * (i + 1)) };
+			let futureValue = 0;
+
+			rentDataPoints[i] = { x: i + 1, y: calcval(i,futureValue) };
 			console.log(rentDataPoints[i]);
 		}
 	};
