@@ -208,7 +208,7 @@ class DataGraph extends Component {
 			axisY: {
 				title: "Total Cost",
 				prefix: "$",
-				includeZero: false
+				includeZero: false,
 			},
 			data: [
 				{
