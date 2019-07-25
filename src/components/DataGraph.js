@@ -178,11 +178,11 @@ class DataGraph extends Component {
 				: 0;
 		CalcElem["downPayment"] = downPayment;
 
-		//P = L[c(1 + c)n]/[(1 + c)n - 1]
 		let homeValue =
 			parseFloat(v["home value"]) > 0 ? parseFloat(v["home value"]) : 0;
 		CalcElem["homeValue"] = homeValue;
 
+		//P = L[c(1 + c)n]/[(1 + c)n - 1]
 		let monthlyMortgage =
 			homeValue > 0
 				? (homeValue - downPayment) *
