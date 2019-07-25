@@ -1,4 +1,4 @@
-export const taxInfo = {
+const taxInfo = {
   "Alabama": {
      "effective_real_estate_tax_rate": 0.0042,
      "annual_taxes_on_194k_home": 817,
@@ -306,3 +306,5 @@ export const taxInfo = {
      "annual_taxes_median_home_value": 1256
   }
 }
+
+module.exports = taxInfo

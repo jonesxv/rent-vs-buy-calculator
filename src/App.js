@@ -14,6 +14,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <h1>Renting vs. Buying Calculator</h1>
         {/* <RentInput /> */}
   
         <MyForm />

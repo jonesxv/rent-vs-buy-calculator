@@ -71,6 +71,11 @@
   margin: .4em;
   opacity: .8;
   outline: none;
+  max-height: 3em;
+}
+
+.location-title {
+  color: white;
 }
 
 .form-container {

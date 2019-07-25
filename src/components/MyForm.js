@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import NumberFormat from 'react-number-format';
 import DataGraph from './DataGraph';
+import taxInfo from '../data/taxInfo';
 
 const fields = {
   rentData: [
@@ -74,6 +75,7 @@ class MyForm extends React.Component {
           ...initVals,
           rentData: fields.rentData,
           mortgageData: fields.mortgageData,
+          location: ''
         }}
         validate={(values) => {
           let errors = [];
@@ -87,8 +89,26 @@ class MyForm extends React.Component {
         render={formProps => {
           return(
             <>
+              <div className="justify-content-center row">
+                <label className="col-4 col-form-label text-left" htmlFor="location">
+                  <h2 className="location-title">What state do you live in?</h2>
+                </label>
+                <select
+                  className="input-field col-3 location"
+                  name="location"
+                  value={formProps.values.location}
+                  onChange={formProps.handleChange}
+                  onBlur={formProps.handleBlur}
+                  style={{ display: 'block' }}
+                >
+                  <option value="" label="Select a location" />
+                  {Object.keys(taxInfo).map(state => (
+                    <option value={state} label={state} />
+                  ))}
+                </select>
+              </div>
             <div className="row justify-content-around form-container">
-            <Form className="col-6 input-form">
+            <Form className="col-md input-form">
               <h1 className="form-title text-left">Rent</h1>
               <FieldArray
                 name='rentData'
@@ -117,7 +137,7 @@ class MyForm extends React.Component {
             	  )}
             	/>
           </Form>
-          <Form className="col-6 input-form input-form-right">
+          <Form className="col-md input-form input-form-right">
             <h1 className="form-title text-left">Buy</h1>
             <FieldArray
                 name='fields'
@@ -135,7 +155,7 @@ class MyForm extends React.Component {
                         className="input-field col-3"
                         placeholder='0'
                         name={field}
-                        value={formProps.values[field]}
+                        value={formProps.values.location.length > 0 && field === 'property taxes' ? taxInfo[formProps.values.location]['effective_real_estate_tax_rate'] * 100 : formProps.values[field]}
                         onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
                       />
                      </div>
