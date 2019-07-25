@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import NumberFormat from 'react-number-format';
 import DataGraph from './DataGraph';
+import { Persist } from 'formik-persist'
 
 const fields = {
   rentData: [
@@ -143,6 +144,7 @@ class MyForm extends React.Component {
                   </div>
             	  )}
             	/>
+              <Persist name="localStoredVals" />
             </Form>
             </div>
             <div>
