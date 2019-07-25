@@ -144,8 +144,8 @@ class DataGraph extends Component {
 			: 0;
 		CalcElem["investmentGain"] = investmentGain;
 
-		let assetInvestementGain = parseFloat(v["asset investement gain"])
-			? parseFloat(v["asset investement gain"])
+		let assetInvestementGain = parseFloat(v["asset investment gain"])
+			? parseFloat(v["asset investment gain"])
 			: 0;
 		CalcElem["assetInvestementGain"] = assetInvestementGain;
 
@@ -154,10 +154,14 @@ class DataGraph extends Component {
 			parseFloat(v["interest"]) > 0 ? parseFloat(v["interest"]) : 0;
 		CalcElem["interest"] = interest;
 
-				let monthlyInterest = interest /12
+		let monthlyInterest = interest /12
 
-		// let monthlyMortgage =
-		// 	parseFloat(v["cost"]) > 0 ? parseFloat(v["cost"]) : 0;
+		let propertyTax = parseFloat(v["property taxes"]) > 0 ? parseFloat(v["property taxes"]) : 0;
+		CalcElem["propertyTax"] = propertyTax;
+
+		let maintenance = parseFloat(v["maintenance"]) > 0 ? parseFloat(v["maintenance"]) : 0;
+		CalcElem["maintenance"] = maintenance;
+
 		let downPayment =
 			parseFloat(v["down payment"]) > 0
 				? parseFloat(v["down payment"])
@@ -166,8 +170,8 @@ class DataGraph extends Component {
 
 		//P = L[c(1 + c)n]/[(1 + c)n - 1]
 		let monthlyMortgage =
-			parseFloat(v["cost"]) > 0
-				? (parseFloat(v["cost"]) - downPayment) *
+			parseFloat(v["home value"]) > 0
+				? (parseFloat(v["home value"]) - downPayment) *
 				  ((monthlyInterest * 0.01 * ((1 + monthlyInterest * 0.01) ** (25*12))) /
 						((((1 + monthlyInterest * 0.01) ** (25*12)) - 1)))
 				: 0;
@@ -183,7 +187,7 @@ class DataGraph extends Component {
 		CalcElem["moneyAvailAfterMortgage"] = Math.round(moneyAvailAfterMortgage);
 
 		let totalRent = monthlyRent + monthlyUtilities;
-		let totalMortgage = monthlyMortgage + monthlyUtilities;
+		let totalMortgage = monthlyMortgage + monthlyUtilities + propertyTax + maintenance;
 		CalcElem["totalRent"] = totalRent;
 
 		//RENT GRAPHING
@@ -267,13 +271,13 @@ class DataGraph extends Component {
 			data: [
 				{
 					type: "line",
-					xValueFormatString: "MMM YYYY",
+					xValueFormatString: "'Net Rent, Month: '#",
 					yValueFormatString: "$#,##0.00",
 					dataPoints: rentDataPoints
 				},
 				{
 					type: "line",
-					xValueFormatString: "MMM YYYY",
+					xValueFormatString: "'Net Buy/Mortgage, Month: '#",
 					yValueFormatString: "$#,##0.00",
 					dataPoints: mortgagedataPoints
 				}
@@ -282,19 +286,20 @@ class DataGraph extends Component {
 		return (
 			<div>
 				<div>
-					<h1>{JSON.stringify(this.props)}</h1>
+					{/* <h1>{JSON.stringify(this.props)}</h1> */}
 					<h2>Rent Story</h2>
 					<p>You pay a monthly rent of {CalcElem.totalRent}</p>
 					<p>
 						You immediately invest your down payment money of{" "}
 						{CalcElem.downPayment} in the stock market at a return
-						of {CalcElem.investmentGain}%.
+						of {CalcElem.investmentGain}%. On the first year's APY you will earn about: {CalcElem.investmentGain*CalcElem.downPayment*.01} 
 					</p>
 					<p>
 						Each month you invest {CalcElem.moneyAvailAfterRent} in
 						the stock market at a return of{" "}
 						{CalcElem.investmentGain}%, and you earn compounding
-						interest. (compounded monthly)
+						interest. (compounded monthly) On the first year's APY you will earn about: {
+							Math.round(CalcElem.moneyAvailAfterRent * (Math.pow(1 + CalcElem.investmentGain/12, 12) - 1) / CalcElem.investmentGain/12)} 
 					</p>
 					{/* --------------------- */}
 					{/* --------------------- */}
@@ -318,7 +323,7 @@ class DataGraph extends Component {
 					</p>
 
 					<h3></h3>
-					<h2>{JSON.stringify(mortgagedataPoints)}</h2>
+					{/* <h2>{JSON.stringify(mortgagedataPoints)}</h2> */}
 				</div>
 				<CanvasJSChart
 					options={options}
