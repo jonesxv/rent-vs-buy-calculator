@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, FormikProps, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import NumberFormat from 'react-number-format';
 import DataGraph from './DataGraph';
 
 const fields = {
@@ -16,6 +17,7 @@ const fields = {
     'down payment',
     'property taxes',
     'maintenance',
+    'utilities',
     'interest'
   ]
 }
@@ -31,6 +33,27 @@ fields.mortgageData.forEach(el => {
 })
 
 
+
+class NumberInput extends React.Component {
+  state = {
+    value: '',
+  };
+  render() {
+    return (
+      <NumberFormat
+        prefix={this.props.name !== 'property taxes' ? '$' : ''}
+        suffix={this.props.name === 'property taxes' ? '%' : ''}
+        placeholder="Number Format Input looses focus"
+        isNumericString={true}
+        thousandSeparator={true}
+        value={this.state.value}
+        onValueChange={vals => this.setState({ value: vals.formattedValue })}
+        {...this.props}
+      />
+    );
+  }
+}
+
 class MyForm extends React.Component {
   
   handleSubmit = (values, { 
@@ -45,8 +68,6 @@ class MyForm extends React.Component {
 
   render() {
 
-    console.log(initVals)
-     
     return(
       <Formik
         initialValues={{
@@ -67,7 +88,7 @@ class MyForm extends React.Component {
           return(
             <>
             <div className="row justify-content-around form-container">
-            <Form className="col-4 input-form">
+            <Form className="col-6 input-form">
               <h1>Rent</h1>
               <FieldArray
                 name='rentData'
@@ -76,21 +97,27 @@ class MyForm extends React.Component {
                    {formProps.values.rentData.map((field, index) => (           
                      <div key={index}>
 							       
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
-                      <Field 
-                        onValueChange={val => formProps.setFieldValue('numbers', val.floatValue)}
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      {/* <Field 
                         className="input-field col-6"
                         type="Number"
                         name={field} 
-                       />
-                     </div>
+                       /> */}
+                      <NumberInput 
+                        className="input-field col-3"
+                        placeholder='0'
+                        name={field}
+                        value={formProps.values[field]}
+                        onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
+                      />
+                    </div>
                   ))}
 
                  </div>
             	  )}
             	/>
           </Form>
-          <Form className="col-4 input-form input-form-right">
+          <Form className="col-6 input-form input-form-right">
             <h1>Buy</h1>
             <FieldArray
                 name='fields'
@@ -98,12 +125,19 @@ class MyForm extends React.Component {
             	   <div>         
                    {formProps.values.mortgageData.map((field, index) => (           
                      <div key={index}>
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
-                      <Field 
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      {/* <Field 
                         className="input-field col-6"
+                        type="Number"
                         name={field} 
-                       />     
-							              
+                       />      */}
+                      <NumberInput 
+                        className="input-field col-3"
+                        placeholder='0'
+                        name={field}
+                        value={formProps.values[field]}
+                        onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
+                      />
                      </div>
                   ))}
                   </div>
