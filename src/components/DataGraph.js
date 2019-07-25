@@ -131,6 +131,9 @@ class DataGraph extends Component {
 			parseFloat(v["income available for housing"]) > 0
 				? parseFloat(v["income available for housing"])
 				: 0;
+
+		CalcElem["housingIncome"] = housingIncome;
+
 		let monthlyUtilities =
 			parseFloat(v.utilities) > 0 ? parseFloat(v.utilities) : 0;
 
@@ -139,6 +142,9 @@ class DataGraph extends Component {
 			parseFloat(v["monthly rent"]) > 0
 				? parseFloat(v["monthly rent"])
 				: 0;
+
+		CalcElem["monthlyRent"] = monthlyRent;
+
 		let investmentGain = parseFloat(v["investment gain"])
 			? parseFloat(v["investment gain"])
 			: 0;
@@ -154,12 +160,16 @@ class DataGraph extends Component {
 			parseFloat(v["interest"]) > 0 ? parseFloat(v["interest"]) : 0;
 		CalcElem["interest"] = interest;
 
-		let monthlyInterest = interest /12
+		let monthlyInterest = interest / 12;
 
-		let propertyTax = parseFloat(v["property taxes"]) > 0 ? parseFloat(v["property taxes"]) : 0;
+		let propertyTax =
+			parseFloat(v["property taxes"]) > 0
+				? parseFloat(v["property taxes"])
+				: 0;
 		CalcElem["propertyTax"] = propertyTax;
 
-		let maintenance = parseFloat(v["maintenance"]) > 0 ? parseFloat(v["maintenance"]) : 0;
+		let maintenance =
+			parseFloat(v["maintenance"]) > 0 ? parseFloat(v["maintenance"]) : 0;
 		CalcElem["maintenance"] = maintenance;
 
 		let downPayment =
@@ -169,11 +179,17 @@ class DataGraph extends Component {
 		CalcElem["downPayment"] = downPayment;
 
 		//P = L[c(1 + c)n]/[(1 + c)n - 1]
+		let homeValue =
+			parseFloat(v["home value"]) > 0 ? parseFloat(v["home value"]) : 0;
+		CalcElem["homeValue"] = homeValue;
+
 		let monthlyMortgage =
-			parseFloat(v["home value"]) > 0
-				? (parseFloat(v["home value"]) - downPayment) *
-				  ((monthlyInterest * 0.01 * ((1 + monthlyInterest * 0.01) ** (25*12))) /
-						((((1 + monthlyInterest * 0.01) ** (25*12)) - 1)))
+			homeValue > 0
+				? (homeValue - downPayment) *
+				  ((monthlyInterest *
+						0.01 *
+						(1 + monthlyInterest * 0.01) ** (25 * 12)) /
+						((1 + monthlyInterest * 0.01) ** (25 * 12) - 1))
 				: 0;
 		CalcElem["monthlyMortgage"] = Math.round(monthlyMortgage);
 
@@ -184,10 +200,13 @@ class DataGraph extends Component {
 
 		let moneyAvailAfterMortgage =
 			housingIncome - monthlyUtilities - monthlyMortgage;
-		CalcElem["moneyAvailAfterMortgage"] = Math.round(moneyAvailAfterMortgage);
+		CalcElem["moneyAvailAfterMortgage"] = Math.round(
+			moneyAvailAfterMortgage
+		);
 
 		let totalRent = monthlyRent + monthlyUtilities;
-		let totalMortgage = monthlyMortgage + monthlyUtilities + propertyTax + maintenance;
+		let totalMortgage =
+			monthlyMortgage + monthlyUtilities + propertyTax + maintenance;
 		CalcElem["totalRent"] = totalRent;
 
 		//RENT GRAPHING
@@ -216,14 +235,20 @@ class DataGraph extends Component {
 				futureValueMortgageStocks =
 					(f + m) * (1 + investmentGain * 0.01);
 				//FVn = P[(1+c)n - 1]/c
-				futureValueMortgageApprec = (mortAppr + (monthlyMortgage - monthlyInterest) ) * (1 + assetInvestementGain * 0.01);
-				return (futureValueMortgageStocks+ futureValueMortgageApprec) - totalMortgage * (i + 1);
+				futureValueMortgageApprec =
+					(mortAppr + (monthlyMortgage - monthlyInterest)) *
+					(1 + assetInvestementGain * 0.01);
+				return (
+					futureValueMortgageStocks +
+					futureValueMortgageApprec -
+					totalMortgage * (i + 1)
+				);
 			}
 		};
 		//Initialize the returns on investments as 0.
 		let futureValueRentStocks = 0 + downPayment;
 		let futureValueMortgageStocks = 0;
-		let futureValueMortgageApprec = 0 + downPayment
+		let futureValueMortgageApprec = 0 + downPayment;
 		//-------------------------------------
 
 		//Calculate for each year. x: year, y: money.
@@ -266,7 +291,7 @@ class DataGraph extends Component {
 			axisY: {
 				title: "Total Cost",
 				prefix: "$",
-				includeZero: false,
+				includeZero: false
 			},
 			data: [
 				{
@@ -285,50 +310,187 @@ class DataGraph extends Component {
 		};
 		return (
 			<div>
-				<div>
-					{/* <h1>{JSON.stringify(this.props)}</h1> */}
-					<h2>Rent Story</h2>
-					<p>You pay a monthly rent of {CalcElem.totalRent}</p>
-					<p>
-						You immediately invest your down payment money of{" "}
-						{CalcElem.downPayment} in the stock market at a return
-						of {CalcElem.investmentGain}%. On the first year's APY you will earn about: {CalcElem.investmentGain*CalcElem.downPayment*.01} 
-					</p>
-					<p>
-						Each month you invest {CalcElem.moneyAvailAfterRent} in
-						the stock market at a return of{" "}
-						{CalcElem.investmentGain}%, and you earn compounding
-						interest. (compounded monthly) On the first year's APY you will earn about: {
-							Math.round(CalcElem.moneyAvailAfterRent * (Math.pow(1 + CalcElem.investmentGain/12, 12) - 1) / CalcElem.investmentGain/12)} 
-					</p>
-					{/* --------------------- */}
-					{/* --------------------- */}
-					{/* --------------------- */}
-					<h2>Buy Story</h2>
-					<p>You pay an amortized monthly mortgage of {CalcElem.monthlyMortgage}.</p>
-					<p>
-						You immediately contribute {CalcElem.downPayment} as an investment
-						in your home principal value at a return of
-						{CalcElem.assetInvestementGain}%.
-					</p>
-					<p>
-						Each month you invest {CalcElem.moneyAvailAfterMortgage}{" "}
-						in the stock market at a return of{" "}
-						{CalcElem.investmentGain}%, and you earn compounding
-						interest. (compounded monthly)
-					</p>
-					<p>
-						In addition, the value of your home increases at a rate
-						of {CalcElem.assetInvestementGain}%.
-					</p>
-
-					<h3></h3>
-					{/* <h2>{JSON.stringify(mortgagedataPoints)}</h2> */}
-				</div>
+				{/* <div> */}
+				{/* 	<h1>{JSON.stringify(this.props)}</h1> */}
+				{/* 	<h2>Rent Story</h2> */}
+				{/* 	<p>You pay a monthly rent of {CalcElem.totalRent}</p> */}
+				{/* 	<p> */}
+				{/* You immediately invest your down payment money of{" "} */}
+				{/* {CalcElem.downPayment} in the stock market at a return */}
+				{/* of {CalcElem.investmentGain}%. On the first year's APY */}
+				{/* you will earn about:{" "} */}
+				{/* {CalcElem.investmentGain * CalcElem.downPayment * 0.01} */}
+				{/* 	</p> */}
+				{/* 	<p> */}
+				{/* Each month you invest {CalcElem.moneyAvailAfterRent} in */}
+				{/* the stock market at a return of{" "} */}
+				{/* {CalcElem.investmentGain}%, and you earn compounding */}
+				{/* interest. (compounded monthly) On the first year's APY */}
+				{/* you will earn about:{" "} */}
+				{/* {Math.round( */}
+				{/* 	(CalcElem.moneyAvailAfterRent * */}
+				{/* 		(Math.pow( */}
+				{/* 			1 + CalcElem.investmentGain / 12, */}
+				{/* 			12 */}
+				{/* 		) - */}
+				{/* 			1)) / */}
+				{/* 		CalcElem.investmentGain / */}
+				{/* 		12 */}
+				{/* )} */}
+				{/* 	</p> */}
+				{/* 	 */}
+				{/* 	<h2>Buy Story</h2> */}
+				{/* 	<p> */}
+				{/* 		You pay an amortized monthly mortgage of{" "} */}
+				{/* 		{CalcElem.monthlyMortgage}. */}
+				{/* 	</p> */}
+				{/* 	<p> */}
+				{/* You immediately contribute {CalcElem.downPayment} as an */}
+				{/* investment in your home principal value at a return of */}
+				{/* {CalcElem.assetInvestementGain}%. */}
+				{/* 	</p> */}
+				{/* 	<p> */}
+				{/* 		Each month you invest {CalcElem.moneyAvailAfterMortgage}{" "} */}
+				{/* 		in the stock market at a return of{" "} */}
+				{/* 		{CalcElem.investmentGain}%, and you earn compounding */}
+				{/* 		interest. (compounded monthly) */}
+				{/* 	</p> */}
+				{/* 	<p> */}
+				{/* 		In addition, the value of your home increases at a rate */}
+				{/* 		of {CalcElem.assetInvestementGain}%. */}
+				{/* 	</p> */}
+				{/* 	<h2>{JSON.stringify(mortgagedataPoints)}</h2> */}
+				{/* </div> */}
 				<CanvasJSChart
 					options={options}
 					/* onRef = {ref => this.chart = ref} */
 				/>
+				<table className="table table-striped table-dark">
+					<thead>
+						<tr>
+							<th scope="col">Cost</th>
+							<th scope="col">Rent</th>
+							<th scope="col">Buy</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr className="bg-info">
+							<th scope="row" colspan="3">
+								After all of your other expenses are covered,
+								you have {CalcElem.housingIncome} left for
+								housing, investments, and savings.
+							</th>
+						</tr>
+						<tr>
+							<th scope="row" className="bg-danger">
+								Fixed
+							</th>
+							<td>
+								You rent a house with month-to-month rent of{" "}
+								<mark>{CalcElem.monthlyRent}</mark>
+							</td>
+							<td>
+								You buy a home with a cost of{" "}
+								<mark>{CalcElem.homeValue}</mark>, for which the
+								bank offers you a monthly mortgage of{" "}
+								{CalcElem.monthlyMortgage}.
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" className="bg-danger">
+								Total Payments
+							</th>
+							<td>
+								Monthly, you pay{" "}
+								<mark>{CalcElem.totalRent}</mark> towards
+								renting, utilities, living in your house.
+							</td>
+							<td>
+								Monthly, you pay{" "}
+								<mark>{CalcElem.monthlyMortgage}</mark> towards
+								the amortized mortgage with interest, utilities,
+								maintenance, and taxes for the home you own.
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" className="bg-success">
+								Stocks
+							</th>
+							<td>
+								{" "}
+								Each month you invest{" "}
+								{CalcElem.moneyAvailAfterRent}, after paying
+								rent/fixed costs, in the stock market at a
+								return of {CalcElem.investmentGain}
+								%, and you earn compounding interest.
+								(compounded monthly) On the first year's APY you
+								will earn about:{" "}
+								<mark>
+									{CalcElem.moneyAvailAfterRent > 0
+										? parseFloat(
+												(CalcElem.moneyAvailAfterRent *
+													(Math.pow(
+														1 +
+															CalcElem.investmentGain /
+																12,
+														12
+													) -
+														1)) /
+													CalcElem.investmentGain /
+													12
+										  )
+										: 0}
+								</mark>
+							</td>
+							<td>
+								{" "}
+								Each month you invest{" "}
+								{CalcElem.moneyAvailAfterMortgage}, after paying
+								mortgage/fixed costs, in the stock market at a
+								return of {CalcElem.investmentGain}
+								%, and you earn compounding interest.
+								(compounded monthly) On the first year's APY you
+								will earn about:{" "}
+								<mark>
+									{CalcElem.moneyAvailAfterMortgage > 0
+										? parseFloat(
+												(CalcElem.moneyAvailAfterRent *
+													(Math.pow(
+														1 +
+															CalcElem.investmentGain /
+																12,
+														12
+													) -
+														1)) /
+													CalcElem.investmentGain /
+													12
+										  )
+										: 0}
+								</mark>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" className="bg-success">
+								Down Payment
+							</th>
+							<td>
+								You immediately invest your down payment money
+								of {CalcElem.downPayment} in the stock market at
+								a return of {CalcElem.investmentGain}%. On the
+								first year's APY you will earn about:{" "}
+								{CalcElem.investmentGain *
+									CalcElem.downPayment *
+									0.01}
+							</td>
+							<td>
+								You immediately contribute{" "}
+								{CalcElem.downPayment} as an investment in your
+								home principal value at a return of
+								{' '+CalcElem.assetInvestementGain}%
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		);
 	}
