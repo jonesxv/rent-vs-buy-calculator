@@ -142,19 +142,48 @@ class DataGraph extends Component {
 		let investmentGain = parseFloat(v["investment gain"])
 			? parseFloat(v["investment gain"])
 			: 0;
+		CalcElem["investmentGain"] = investmentGain;
+
+		let assetInvestementGain = parseFloat(v["asset investement gain"])
+			? parseFloat(v["asset investement gain"])
+			: 0;
+		CalcElem["assetInvestementGain"] = assetInvestementGain;
 
 		//Affects Mortgage form.
+		let interest =
+			parseFloat(v["interest"]) > 0 ? parseFloat(v["interest"]) : 0;
+		CalcElem["interest"] = interest;
+
+				let monthlyInterest = interest /12
+
+		// let monthlyMortgage =
+		// 	parseFloat(v["cost"]) > 0 ? parseFloat(v["cost"]) : 0;
+		let downPayment =
+			parseFloat(v["down payment"]) > 0
+				? parseFloat(v["down payment"])
+				: 0;
+		CalcElem["downPayment"] = downPayment;
+
+		//P = L[c(1 + c)n]/[(1 + c)n - 1]
 		let monthlyMortgage =
-			parseFloat(v["cost"]) > 0 ? parseFloat(v["cost"]) : 0;
+			parseFloat(v["cost"]) > 0
+				? (parseFloat(v["cost"]) - downPayment) *
+				  ((monthlyInterest * 0.01 * ((1 + monthlyInterest * 0.01) ** (25*12))) /
+						((((1 + monthlyInterest * 0.01) ** (25*12)) - 1)))
+				: 0;
+		CalcElem["monthlyMortgage"] = Math.round(monthlyMortgage);
 
 		//Remaining Income for EITHER form
 		let moneyAvailAfterRent =
 			housingIncome - monthlyUtilities - monthlyRent;
+		CalcElem["moneyAvailAfterRent"] = Math.round(moneyAvailAfterRent);
+
 		let moneyAvailAfterMortgage =
 			housingIncome - monthlyUtilities - monthlyMortgage;
+		CalcElem["moneyAvailAfterMortgage"] = Math.round(moneyAvailAfterMortgage);
 
 		let totalRent = monthlyRent + monthlyUtilities;
-				let totalMortgage = monthlyMortgage + monthlyUtilities;
+		let totalMortgage = monthlyMortgage + monthlyUtilities;
 		CalcElem["totalRent"] = totalRent;
 
 		//RENT GRAPHING
@@ -164,19 +193,33 @@ class DataGraph extends Component {
 		//f: futureValue passed as a param. Updates futureValue in outer scope.
 		//m: money that is available to be invested. moneyAvailAfterRent || moneyAvailAfterMortgage
 		//t: type ('rent','mortgage',null)
-		let calcval = (i, f, m, t) => {
+		//mortAppr: futureValueMortgageApprec updater
+		let calcval = (i, f, m, t, mortAppr) => {
 			if (t == "rent") {
-				futureValueRent = (f + m) * (1 + investmentGain * 0.01);
-				return futureValueRent - totalRent * (i + 1);
+				futureValueRentStocks = (f + m) * (1 + investmentGain * 0.01);
+				return futureValueRentStocks - totalRent * (i + 1);
 			} else {
-				futureValueMortgage = (f + m) * (1 + investmentGain * 0.01);
-				return futureValueMortgage - totalMortgage * (i + 1);
+				// if (i == 0) {
+				// 	console.log(
+				// 		"vars at yr 1 mort==:" + f,
+				// 		m,
+				// 		investmentGain,
+				// 		futureValueMortgageStocks,
+				// 		totalMortgage,
+				// 		calculated
+				// 	);
+				// }
+				futureValueMortgageStocks =
+					(f + m) * (1 + investmentGain * 0.01);
+				//FVn = P[(1+c)n - 1]/c
+				futureValueMortgageApprec = (mortAppr + (monthlyMortgage - monthlyInterest) ) * (1 + assetInvestementGain * 0.01);
+				return (futureValueMortgageStocks+ futureValueMortgageApprec) - totalMortgage * (i + 1);
 			}
 		};
 		//Initialize the returns on investments as 0.
-		let futureValueRent = 0;
-		let futureValueMortgage = 0;
-
+		let futureValueRentStocks = 0 + downPayment;
+		let futureValueMortgageStocks = 0;
+		let futureValueMortgageApprec = 0 + downPayment
 		//-------------------------------------
 
 		//Calculate for each year. x: year, y: money.
@@ -184,14 +227,25 @@ class DataGraph extends Component {
 			// console.log("future val:" + futureValue);
 			rentDataPoints[i] = {
 				x: i + 1,
-				y: calcval(i, futureValueRent, moneyAvailAfterRent, 'rent')
+				y: calcval(
+					i,
+					futureValueRentStocks,
+					moneyAvailAfterRent,
+					"rent"
+				)
 			};
 
 			mortgagedataPoints[i] = {
 				x: i + 1,
-				y: calcval(i, futureValueMortgage, moneyAvailAfterMortgage, 'mortgage')
+				y: calcval(
+					i,
+					futureValueMortgageStocks,
+					moneyAvailAfterMortgage,
+					"mortgage",
+					futureValueMortgageApprec
+				)
 			};
-			console.log(rentDataPoints[i]);
+			//console.log(rentDataPoints[i]);
 		}
 	};
 
@@ -221,12 +275,7 @@ class DataGraph extends Component {
 					type: "line",
 					xValueFormatString: "MMM YYYY",
 					yValueFormatString: "$#,##0.00",
-					dataPoints: mortgagedataPoints.map(data => {
-						return {
-							...data,
-							y: data.y * 10
-						};
-					})
+					dataPoints: mortgagedataPoints
 				}
 			]
 		};
@@ -234,9 +283,42 @@ class DataGraph extends Component {
 			<div>
 				<div>
 					<h1>{JSON.stringify(this.props)}</h1>
-					<h2>Total Rent: {CalcElem.totalRent} </h2>
+					<h2>Rent Story</h2>
+					<p>You pay a monthly rent of {CalcElem.totalRent}</p>
+					<p>
+						You immediately invest your down payment money of{" "}
+						{CalcElem.downPayment} in the stock market at a return
+						of {CalcElem.investmentGain}%.
+					</p>
+					<p>
+						Each month you invest {CalcElem.moneyAvailAfterRent} in
+						the stock market at a return of{" "}
+						{CalcElem.investmentGain}%, and you earn compounding
+						interest. (compounded monthly)
+					</p>
+					{/* --------------------- */}
+					{/* --------------------- */}
+					{/* --------------------- */}
+					<h2>Buy Story</h2>
+					<p>You pay an amortized monthly mortgage of {CalcElem.monthlyMortgage}.</p>
+					<p>
+						You immediately contribute {CalcElem.downPayment} as an investment
+						in your home principal value at a return of
+						{CalcElem.assetInvestementGain}%.
+					</p>
+					<p>
+						Each month you invest {CalcElem.moneyAvailAfterMortgage}{" "}
+						in the stock market at a return of{" "}
+						{CalcElem.investmentGain}%, and you earn compounding
+						interest. (compounded monthly)
+					</p>
+					<p>
+						In addition, the value of your home increases at a rate
+						of {CalcElem.assetInvestementGain}%.
+					</p>
+
 					<h3></h3>
-					<h2>{JSON.stringify(rentDataPoints)}</h2>
+					<h2>{JSON.stringify(mortgagedataPoints)}</h2>
 				</div>
 				<CanvasJSChart
 					options={options}
