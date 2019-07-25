@@ -42,18 +42,16 @@
   margin-bottom: 5em;
 }
 
-.input-form-right {
-
-}
-
 .input-form h1 {
   margin-bottom: 1em;
 }
 
 .input-field {
-  padding: .4em;
+  padding: .5em;
   border-radius: .4em;
   margin: .4em;
+  opacity: .9;
+  outline: none;
 }
 
 .form-container {
