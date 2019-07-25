@@ -88,7 +88,7 @@ class MyForm extends React.Component {
           return(
             <>
             <div className="row justify-content-around form-container">
-            <Form className="col-4 input-form">
+            <Form className="col-6 input-form">
               <h1>Rent</h1>
               <FieldArray
                 name='rentData'
@@ -97,15 +97,15 @@ class MyForm extends React.Component {
                    {formProps.values.rentData.map((field, index) => (           
                      <div key={index}>
 							       
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
                       {/* <Field 
                         className="input-field col-6"
                         type="Number"
                         name={field} 
                        /> */}
                       <NumberInput 
-                        className="input-field col-6"
-                        placeholder={`enter ${field}`}
+                        className="input-field col-3"
+                        placeholder='0'
                         name={field}
                         value={formProps.values[field]}
                         onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
@@ -117,7 +117,7 @@ class MyForm extends React.Component {
             	  )}
             	/>
           </Form>
-          <Form className="col-4 input-form input-form-right">
+          <Form className="col-6 input-form input-form-right">
             <h1>Buy</h1>
             <FieldArray
                 name='fields'
@@ -125,15 +125,15 @@ class MyForm extends React.Component {
             	   <div>         
                    {formProps.values.mortgageData.map((field, index) => (           
                      <div key={index}>
-                      <label className="col-5 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
+                      <label className="col-8 col-form-label text-left" htmlFor={`fields.${field}`}>{field}</label>
                       {/* <Field 
                         className="input-field col-6"
                         type="Number"
                         name={field} 
                        />      */}
                       <NumberInput 
-                        className="input-field col-6"
-                        placeholder={`enter ${field}`}
+                        className="input-field col-3"
+                        placeholder='0'
                         name={field}
                         value={formProps.values[field]}
                         onValueChange={val => formProps.setFieldValue(field, val.floatValue)}
