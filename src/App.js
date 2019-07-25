@@ -3,6 +3,7 @@ import './App.css';
 
 // import RentInput from './components/RentInput'
 import MyForm from './components/MyForm'
+import Navbar from './components/Navbar'
 
 const imaginaryUser = {
   email: '',
@@ -13,12 +14,11 @@ const imaginaryUser = {
 class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <h1>Renting vs. Buying Calculator</h1>
-        {/* <RentInput /> */}
-  
-        <MyForm />
-        
+      <div className="main">
+        <Navbar />
+        <div className="App">
+          <MyForm />
+        </div>
       </div>
     )
   }

@@ -1,7 +1,11 @@
+.main {
+  background: -webkit-linear-gradient(left, #3931af, #0091ba);
+}
+
 .App {
   text-align: center;
   padding: 10% 15%;
-  background: -webkit-linear-gradient(left, #3931af, #0091ba);
+  font-family: 'Archivo', sans-serif;
 }
 
 .App-logo {
@@ -81,4 +85,23 @@
 .form-container {
   display: flex;
   flex-wrap: wrap;
+}
+
+
+.navbar-default{
+  background:transparent;
+  background-image:none;
+  border-color:transparent;
+  box-shadow:none;
+}
+
+.navbar-brand {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.house {
+  max-height: 2.1em;
+  width: 100%;
+  margin-top: .3em;
 }
