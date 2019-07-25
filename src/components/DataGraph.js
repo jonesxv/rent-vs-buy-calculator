@@ -107,11 +107,9 @@ var rentDataPoints = [
 
 let CalcElem = {
 	totalRent: 0
-}
+};
 
 class DataGraph extends Component {
-
-
 	// state = { value: 0,
 	// 	fixedRent: 0 };
 
@@ -127,26 +125,46 @@ class DataGraph extends Component {
 	// }
 
 	//v (value)
-	calculateDataPoints = (v) =>
-	{
-		let totalRent = parseFloat(v['monthly rent']) + parseFloat(v.utilities)
-		if(totalRent >0)
-			{
-				CalcElem.totalRent = totalRent
-				for(let i=0;i<10;i++)
-					{
-						rentDataPoints[i] = {x:(i+1),y:parseInt(totalRent)*(i+1)}
-						console.log(rentDataPoints[i])
-					}
-				}
-		else
-			{CalcElem.totalRent = 0}
+	calculateDataPoints = v => {
+		//Affects either form.
+		let housingIncome =
+			parseFloat(v["income available for housing"]) > 0
+				? parseFloat(v["income available for housing"])
+				: 0;
+		let monthlyUtilities =
+			parseFloat(v.utilities) > 0 ? parseFloat(v.utilities) : 0;
 
-		//
+		//Affects RENT form.
+		let monthlyRent =
+			parseFloat(v["monthly rent"]) > 0
+				? parseFloat(v["monthly rent"])
+				: 0;
+		let investmentGain = parseFloat(v["investment gain"])
+			? parseFloat(v["investment gain"])
+			: 0;
 
-	}
+		//Remaining Income for EITHER form
+		let remainingIncRent = housingIncome - monthlyUtilities - monthlyRent;
+		let remainingIncMortgage =
+			housingIncome - monthlyUtilities - monthlyRent;
+
+		let totalRent = monthlyRent + monthlyUtilities;
+
+		//RENT GRAPHING
+		let calcval = (i,futureValue) => {
+			futureValue = (futureValue + remainingIncRent ) * (1 + investmentGain);
+			return (totalRent * (i+1)) - (futureValue)
+		}
+		for (let i = 0; i < 12; i++) {
+			let futureValue = 0;
+
+			rentDataPoints[i] = { x: i + 1, y: calcval(i,futureValue) };
+			console.log(rentDataPoints[i]);
+		}
+	};
+
 	render() {
-		this.calculateDataPoints(this.props)
+		this.calculateDataPoints(this.props);
 		const mortgageTotal = this.props.mortgageTotal;
 		const rentTotal = this.props.rentTotal;
 		// if(this.setState({fixedRent: this.props.total + this.props.utilities})
