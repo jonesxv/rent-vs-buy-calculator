@@ -14,7 +14,7 @@ const fields = {
   ],
   mortgageData: [
     'income available for housing',
-    'asset investement gain',
+    'asset investment gain',
     'cost',
     'down payment',
     'property taxes',
@@ -43,8 +43,8 @@ class NumberInput extends React.Component {
   render() {
     return (
       <NumberFormat
-        prefix={this.props.name !== 'property taxes' ? '$' : ''}
-        suffix={this.props.name === 'property taxes' ? '%' : ''}
+        prefix={this.props.name !== 'property taxes' && this.props.name !== 'asset investment gain' && this.props.name !== 'investment gain' ? '$' : ''}
+        suffix={this.props.name === 'property taxes' || this.props.name === 'asset investment gain' || this.props.name === 'investment gain' ? '%' : ''}
         placeholder="Number Format Input looses focus"
         isNumericString={true}
         thousandSeparator={true}
