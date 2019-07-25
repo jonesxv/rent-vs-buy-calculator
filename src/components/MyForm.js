@@ -89,7 +89,7 @@ class MyForm extends React.Component {
             <>
             <div className="row justify-content-around form-container">
             <Form className="col-6 input-form">
-              <h1>Rent</h1>
+              <h1 className="form-title text-left">Rent</h1>
               <FieldArray
                 name='rentData'
                 render={arrayHelpers => (
@@ -118,7 +118,7 @@ class MyForm extends React.Component {
             	/>
           </Form>
           <Form className="col-6 input-form input-form-right">
-            <h1>Buy</h1>
+            <h1 className="form-title text-left">Buy</h1>
             <FieldArray
                 name='fields'
                 render={arrayHelpers => (

@@ -34,6 +34,25 @@
   }
 }
 
+.form-title {
+  position: relative;
+  display: inline-block;
+  width: 80%;
+}
+
+.form-title:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: hsla(0,0%,100%,.3);
+  height: 10px;
+  width: 120%;
+  left: 50%;
+  bottom: -2px;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
 .input-form {
   
   color: white;
@@ -50,7 +69,7 @@
   padding: .5em;
   border-radius: .4em;
   margin: .4em;
-  opacity: .9;
+  opacity: .8;
   outline: none;
 }
 
