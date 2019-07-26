@@ -91,11 +91,11 @@ class MyForm extends React.Component {
           return(
             <>
               <div className="justify-content-center row">
-                <label className="col-4 col-form-label text-left" htmlFor="location">
+                <label className="col-md-4 col-sm-12 col-form-label text-left" htmlFor="location">
                   <h2 className="location-title">What state do you live in?</h2>
                 </label>
                 <select
-                  className="input-field col-3 location"
+                  className="input-field col-md-3 col-sm-12 location"
                   name="location"
                   value={formProps.values.location}
                   onChange={formProps.handleChange}

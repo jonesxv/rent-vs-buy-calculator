@@ -20,8 +20,8 @@
   position: absolute;
   background-color: hsla(0,0%,100%,.3);
   height: 10px;
-  width: 110%;
-  left: 50%;
+  width: 85%;
+  left: 40%;
   bottom: 5px;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
@@ -71,7 +71,14 @@
 }
 
 .house {
-  max-height: 2.1em;
-  width: 100%;
+  /* max-height: 2.1em;
+  width: 100%; */
+  min-width: 1em;;
+  max-width: 1em;
+  height: 100%;
   margin-top: .3em;
+}
+
+.nav {
+  width: 100%
 }
