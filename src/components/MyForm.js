@@ -20,7 +20,8 @@ const fields = {
     'property taxes',
     'maintenance',
     'utilities',
-    'interest'
+    'interest',
+    'closing cost'
   ]
 }
 
