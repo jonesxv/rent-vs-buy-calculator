@@ -109,7 +109,7 @@ class MyForm extends React.Component {
                   ))}
                 </select>
               </div>
-            <a className="site" href="https://wallethub.com/edu/t/states-with-the-highest-and-lowest-property-taxes/11585/" atl="tax info">Home and tax information by Wallet Hub, 2019</a>
+            <a className="citation" href="https://wallethub.com/edu/t/states-with-the-highest-and-lowest-property-taxes/11585/" atl="tax info">Home and tax information by Wallet Hub, 2019</a>
             <div className="row justify-content-around form-container">
             <Form className="col-md input-form">
               <h1 className="form-title text-left">Rent</h1>
