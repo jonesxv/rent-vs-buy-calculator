@@ -44,8 +44,8 @@ class NumberInput extends React.Component {
   render() {
     return (
       <NumberFormat
-        prefix={this.props.name !== 'property taxes' && this.props.name !== 'asset investment gain' && this.props.name !== 'investment gain' ? '$' : ''}
-        suffix={this.props.name === 'property taxes' || this.props.name === 'asset investment gain' || this.props.name === 'investment gain' ? '%' : ''}
+        prefix={this.props.name !== 'property taxes' && this.props.name !== 'asset investment gain' && this.props.name !== 'investment gain' && this.props.name !== 'closing cost' ? '$' : ''}
+        suffix={this.props.name === 'property taxes' || this.props.name === 'asset investment gain' || this.props.name === 'investment gain' || this.props.name === 'closing cost' ? '%' : ''}
         placeholder="Number Format Input looses focus"
         isNumericString={true}
         thousandSeparator={true}
