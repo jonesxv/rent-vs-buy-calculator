@@ -247,8 +247,7 @@ class DataGraph extends Component {
 				] = futureValueMortgageStocks;
 				//FVn = P[(1+c)n - 1]/c
 				futureValueMortgageApprec =
-					(mortAppr + ((homeValue/25)/12)) *
-					(1 + (((assetInvestementGain* 0.01) / 12)));
+					(mortAppr + ((homeValue/(25*12))) ) * ((((assetInvestementGain* (0.01/12) ))) );
 
 				futureValueMortgageApprecStore[
 					i + 1
@@ -256,7 +255,7 @@ class DataGraph extends Component {
 
 				console.log(`calcing mortgage for year ${i+1}, with ${futureValueMortgageStocks} + ${futureValueMortgageApprec} - ${totalMortgage * (i + 1)}`)
 				return (
-					(futureValueMortgageStocks - (totalMortgage * (i + 1)) ) * -1
+					(futureValueMortgageStocks + futureValueMortgageApprec - (totalMortgage * (i + 1)) ) * -1
 				);
 			}
 		};
