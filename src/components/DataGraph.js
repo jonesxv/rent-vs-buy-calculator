@@ -176,6 +176,9 @@ class DataGraph extends Component {
 			parseFloat(v["maintenance"]) > 0 ? parseFloat(v["maintenance"]) : 0;
 		CalcElem["maintenance"] = maintenance;
 
+		let closingCost = parseFloat(v["closing cost"]) > 0 ? parseFloat(v["closing cost"]) : 0;
+		CalcElem["closing cost"] = maintenance;
+
 		let downPayment =
 			parseFloat(v["down payment"]) > 0
 				? parseFloat(v["down payment"])
@@ -204,11 +207,14 @@ class DataGraph extends Component {
 
 		let totalRent = monthlyRent + monthlyUtilities;
 		let totalMortgage =
-			monthlyMortgage + monthlyUtilities + (((propertyTax*.01)/12)*homeValue) + maintenance;
+			monthlyMortgage +
+			monthlyUtilities +
+			(((propertyTax * 0.01) / 12) * homeValue) +
+			maintenance;
 		CalcElem["totalRent"] = totalRent;
+		CalcElem["totalMortgage"] = Math.round(totalMortgage *100)/100;
 
-				let moneyAvailAfterMortgage =
-			housingIncome - totalMortgage;
+		let moneyAvailAfterMortgage = housingIncome - totalMortgage;
 		CalcElem["moneyAvailAfterMortgage"] = Math.round(
 			moneyAvailAfterMortgage
 		);
@@ -228,7 +234,7 @@ class DataGraph extends Component {
 				//console.log('in month '+parseInt(i+1)+', the future val of rent was..'+futureValueRentStocks)
 				futureValueRentStocksStore[i + 1] = futureValueRentStocks;
 
-				return (futureValueRentStocks - (totalRent * (i + 1))  ) * -1;
+				return futureValueRentStocks - (totalRent * (i + 1))
 			} else {
 				// if (i == 0) {
 				// 	console.log(
@@ -247,22 +253,31 @@ class DataGraph extends Component {
 				] = futureValueMortgageStocks;
 				//FVn = P[(1+c)n - 1]/c
 				futureValueMortgageApprec =
-					(mortAppr + ((homeValue/(25*12))) ) * ((((assetInvestementGain* (0.01/12) ))) );
+					(mortAppr + monthlyMortgage - (monthlyInterest* .01 * remainingHomePrincipal)) * (1 + (assetInvestementGain/12) *.01 );
 
 				futureValueMortgageApprecStore[
 					i + 1
 				] = futureValueMortgageApprec;
 
-				console.log(`calcing mortgage for year ${i+1}, with ${futureValueMortgageStocks} + ${futureValueMortgageApprec} - ${totalMortgage * (i + 1)}`)
+				remainingHomePrincipal = remainingHomePrincipal - (monthlyMortgage - (monthlyInterest* .01 * remainingHomePrincipal));
+				console.log(
+					`calcing mortgage for year ${i +
+						1}, with ${futureValueMortgageStocks} + ${futureValueMortgageApprec} - ${totalMortgage *
+						(i + 1)}`
+				);
 				return (
-					(futureValueMortgageStocks + futureValueMortgageApprec - (totalMortgage * (i + 1)) ) * -1
+					futureValueMortgageStocks +
+						futureValueMortgageApprec -
+						(closingCost*.01*homeValue) -
+						(totalMortgage * (i + 1)) 
 				);
 			}
 		};
 		//Initialize the returns on investments as 0.
 		let futureValueRentStocks = 0 + downPayment;
 		let futureValueMortgageStocks = 0;
-		let futureValueMortgageApprec = 0 + downPayment;
+		let futureValueMortgageApprec = 0 + downPayment
+		let remainingHomePrincipal = homeValue;
 		//-------------------------------------
 
 		let maxYears = 10;
@@ -371,7 +386,7 @@ class DataGraph extends Component {
 							</td>
 							<td>
 								Monthly, you pay{" "}
-								<mark>{CalcElem.monthlyMortgage}</mark> towards
+								<mark>{CalcElem.totalMortgage}</mark> towards
 								the amortized mortgage with interest, utilities,
 								maintenance, and taxes for the home you own.
 							</td>
@@ -402,7 +417,7 @@ class DataGraph extends Component {
 									<mark>
 										{futureValueRentStocksStore[12 * 10]}
 									</mark>
-									 and u lost {CalcElem.totalRent * 12 * 10}
+									and u lost {CalcElem.totalRent * 12 * 10}
 								</p>
 							</td>
 							<td>
@@ -412,7 +427,8 @@ class DataGraph extends Component {
 								mortgage/fixed costs, in the stock market at a
 								return of {CalcElem.investmentGain}
 								%, and you earn compounding interest.
-								(compounded monthly). 								<p>
+								(compounded monthly).{" "}
+								<p>
 									After the first year your investments
 									(stocks) are worth:{" "}
 									<mark>
@@ -423,7 +439,11 @@ class DataGraph extends Component {
 									After 10 years your investments (stocks) are
 									worth:{" "}
 									<mark>
-										{futureValueMortgageStocksStore[12 * 10]}
+										{
+											futureValueMortgageStocksStore[
+												12 * 10
+											]
+										}
 									</mark>
 								</p>
 							</td>
