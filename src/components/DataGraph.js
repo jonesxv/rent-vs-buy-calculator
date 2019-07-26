@@ -268,6 +268,7 @@ class DataGraph extends Component {
 				return (
 					futureValueMortgageStocks +
 						futureValueMortgageApprec -
+						(closingCost*.01*homeValue) -
 						(totalMortgage * (i + 1)) 
 				);
 			}
@@ -275,7 +276,7 @@ class DataGraph extends Component {
 		//Initialize the returns on investments as 0.
 		let futureValueRentStocks = 0 + downPayment;
 		let futureValueMortgageStocks = 0;
-		let futureValueMortgageApprec = 0 + downPayment - (closingCost*homeValue);
+		let futureValueMortgageApprec = 0 + downPayment
 		let remainingHomePrincipal = homeValue;
 		//-------------------------------------
 
